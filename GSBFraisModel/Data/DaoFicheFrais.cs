@@ -75,7 +75,7 @@ namespace GSBFraisModel.Data
                 Etat unEtat = _daoEtat.SelectByIdEtat((string)r["idEtat"]);
                 FicheFrais uneFicheFrais = new FicheFrais((string)r["mois"], (int)r["nbJustificatifs"], (decimal)r["montantvalide"], (DateTime)r["dateModif"], leVisiteur, unEtat);
                 List<LigneFraisForfait> lesLignesFraisForfait = new List<LigneFraisForfait>(this._daoLigneFraitForfait.SelectByFicheFrais(uneFicheFrais));
-                List<LigneFraisHorsForfait> lesLignesFraisHorsForafait = new List<LigneFraisHorsForfait>(this._daoLigneFraisHorsForfait.selectbyFicheFrais(uneFicheFrais));
+                List<LigneFraisHorsForfait> lesLignesFraisHorsForafait = new List<LigneFraisHorsForfait>(this._daoLigneFraisHorsForfait.selectByFicheFrais(uneFicheFrais));
                 uneFicheFrais.LesLignesFraisForfait1 = lesLignesFraisForfait;
                 uneFicheFrais.LesLignesFraisHorsForfait = lesLignesFraisHorsForafait;
                 listeFicheFrais.Add(new FicheFrais((string)r["mois"], (int)r["nbJustificatifs"], (decimal)r["montantvalide"], (DateTime)r["dateModif"], leVisiteur, unEtat));

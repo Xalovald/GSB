@@ -55,12 +55,23 @@ namespace GSBFraisModel.Data
             DataRow result = this.unDbal.SelectById("ligneFraisHorsForfait", "id = " + idFraisHorsForfait);
             return new LigneFraisHorsForfait((int)result["id"], (string)result["libelle"], (DateTime)result["date"], (decimal)result["montant"], uneFicheFrais);
         }
-        public List<LigneFraisHorsForfait> selectbyFicheFrais(FicheFrais uneFicheFrais)
+
+        public List<LigneFraisHorsForfait> selectByFicheFrais(FicheFrais uneFicheFrais)
+        {
+            List<LigneFraisHorsForfait> listesLignesFraisHorsForfait = new List<LigneFraisHorsForfait>();
+            DataTable myTable = this.unDbal.SelectByComposedFK2("lignefraisforfait", "idVisiteur", uneFicheFrais.UnVisiteur.Id, "mois", uneFicheFrais.Mois);
+            foreach (DataRow r in myTable.Rows)
+            {
+                FraisForfait leFraisForfait = this._daoFraisForfait.SelectById((string)r["idFraisForfait"]);
+                listesLignesFraisHorsForfait.Add(new LigneFraisHorsForfait((int)r["id"], (string)r["libelle"], (DateTime)r["date"], (decimal)r["Montant"], uneFicheFrais));
+            }
+            return listesLignesFraisHorsForfait;
+        }
+        /*public List<LigneFraisHorsForfait> selectbyFicheFrais(FicheFrais uneFicheFrais)
         {
             List<LigneFraisHorsForfait> listLigneFraisForfait = new List<LigneFraisHorsForfait>();
             DataRow myTable = this.unDbal.SelectByComposedPK2("lignefraisforfait", "idVisiteur", uneFicheFrais.UnVisiteur.Id, "mois", uneFicheFrais.Mois);
             return listLigneFraisForfait;
-        }
-
+        */
     }
 }
