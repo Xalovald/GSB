@@ -309,7 +309,7 @@ namespace WpfGSB.ViewModel
         }
         private void ReporterLigneFraisHorsForfait()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }
