@@ -87,6 +87,14 @@ namespace GSBFraisModel.Data
             }
             return listeFicheFrais;
         }
+
+        public FicheFrais SelectByVisiteurMois(Visiteurs unVisiteur, string unMois)
+        {
+            DataRow r = _dbal.SelectByComposedPK2("fichefrais", "idVisiteur", unVisiteur.Id, "mois", unMois);
+            Etat unEtat = _daoEtat.SelectByIdEtat((string)r["idEtat"]);
+            FicheFrais uneFicheFrais = new FicheFrais((string)r["mois"], (int)r["nbJustificatifs"], (decimal)r["montantvalide"], (DateTime)r["dateModif"], unVisiteur, unEtat);
+            return uneFicheFrais;
+        }
         public List<string> SelectListMonth()
         {
             List<string> ListMonth = new List<string>();
