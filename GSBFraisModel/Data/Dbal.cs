@@ -57,7 +57,7 @@ namespace GSBFraisModel.Data
             OpenConnection();
             MySqlCommand cmd = new MySqlCommand(query, conn);
             int nbLignes = cmd.ExecuteNonQuery();
-            CloseConnection();
+            CloseConnection(); //si on veut charger plus vite, enlever cette ligne
             return nbLignes;
         }
         public void Insert(string query)

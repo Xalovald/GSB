@@ -114,7 +114,7 @@ namespace WpfGSB.ViewModel
                 }
             }
         }
-        public LigneFraisHorsForfait SelectedFraisHorsForfait
+        public LigneFraisHorsForfait SelectedLigneFraisHorsForfait
         {
             get
             {
@@ -124,7 +124,7 @@ namespace WpfGSB.ViewModel
             set
             {
                 _selectedligneFraisHorsForfait = value;
-                OnPropertyChanged("SelectedFraisHorsForfait");
+                OnPropertyChanged("SelectedLigneFraisHorsForfait");
             }
         }
 
@@ -267,7 +267,7 @@ namespace WpfGSB.ViewModel
             this._daoLigneFraisForfait = uneDaoLigneFraisForfait;
             this._daoFicheFrais = uneDaoFicheFrais;
             this._daoLigneFraisHorsForfait = uneDaoligneFraisHorsForfait;
-            _listFicheFrais = new ObservableCollection<FicheFrais>(_daoFicheFrais.SelectAll());
+            _listFicheFrais = new ObservableCollection<FicheFrais>(_daoFicheFrais.SelectByMonth(SelectedMois));
             ListMois = new ObservableCollection<string>(_daoFicheFrais.SelectListMonth());
             Etat = new ObservableCollection<Etat>(leDaoEtat.SelectAll());
 
@@ -309,7 +309,33 @@ namespace WpfGSB.ViewModel
         }
         private void ReporterLigneFraisHorsForfait()
         {
-            
+            string mois;
+            switch(DateTime.Now.Month)
+            {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                    mois = "0" + DateTime.Now.Month;
+                    break;
+                default:
+                    mois = DateTime.Now.Month.ToString();
+                    break;
+            }
+            FicheFrais fichefrais = _daoFicheFrais.SelectByVisiteurMois(SelectedFicheFrais.UnVisiteur, DateTime.Now.Year.ToString() + mois);
+            if(fichefrais == null)
+            {
+                fichefrais = new FicheFrais(DateTime.Now.Year.ToString() + mois, SelectedFicheFrais.Nbjustificatif, SelectedFicheFrais.MontantValide, SelectedFicheFrais.DateModif, SelectedFicheFrais.UnVisiteur, SelectedFicheFrais.UnEtat);
+                _daoFicheFrais.Insert(fichefrais);
+            }
+            SelectedLigneFraisHorsForfait.FicheFrais = fichefrais;
+            _daoLigneFraisHorsForfait.Update(SelectedLigneFraisHorsForfait);
+            ListFraisHorsForfait.Remove(SelectedLigneFraisHorsForfait);
         }
     }
 }
